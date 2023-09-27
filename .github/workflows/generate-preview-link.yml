@@ -55,7 +55,7 @@ jobs:
               uses: marocchino/sticky-pull-request-comment@v2
               with:
                   header: Cloudflare Pages Action Comment
-                  number: ${{github.event.workflow_run.pull_requests[0].id}}
+                  number: ${{github.event.workflow_run.pull_requests[0].number}}
                   message: ${{steps.generate_action_url.outputs.comment}}
                   recreate: true
 
