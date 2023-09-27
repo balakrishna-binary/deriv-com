@@ -36,6 +36,29 @@ jobs:
                   run_id: ${{ github.event.workflow_run.id }}
                   name: 'pr-${{ github.event.workflow_run.id }}'
 
+            - name: 'Generate action link comment'
+              id: generate_action_url
+              uses: actions/github-script@v3
+              with:
+                  github-token: ${{ github.token }}
+                  script: |
+                      const action_url = "${{github.server_url}}/${{github.repository}}/actions/runs/${{github.run_id}}"
+                      const comment = [
+                          `**Preview Link**: ${action_url}`,
+                          '| Name | Link |',
+                          '| :--- | :------ |',
+                          `| **Action URL**  | [Visit Action](${action_url}) |`,
+                          ''
+                        ].join('\n')
+                      core.setOutput("comment", comment);
+            - name: Post Cloudflare Pages Preview comment
+              uses: marocchino/sticky-pull-request-comment@v2
+              with:
+                  header: Cloudflare Pages Action Comment
+                  number: ${{github.event.workflow_run.pull_requests[0].id}}
+                  message: ${{steps.generate_action_url.outputs.comment}}
+                  recreate: true
+
             - name: Retrieve pull request and verify user organization
               id: pr_information
               run: |
