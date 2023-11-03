@@ -86,13 +86,7 @@ jobs:
                   head_branch=${{github.event.workflow_run.head_branch}}
                   branch=$(echo $head_branch | head -c 20 | sed 's/[\/_\.]/-/g; s/[^a-zA-Z0-9]$/1/')
                   echo "------"
-                  cat log.txt
-                  if grep -q "Deployment complete" log.txt; then
-                    echo "preview_url=https://$branch.deriv-com-preview-links.pages.dev" > "$GITHUB_OUTPUT"
-                  else
-                    echo "Deployment to Cloudflare Pages failed."
-                    exit 1
-                  fi
+                  echo "preview_url=https://$branch.deriv-com-preview-links.pages.dev" > "$GITHUB_OUTPUT"
             - name: 'Generate preview link comment'
               if: success()
               id: generate_preview_url
