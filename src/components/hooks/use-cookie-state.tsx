@@ -9,7 +9,7 @@ export const useCookieState = (key: string, options: { expires: Date }) => {
         return sticky_value ? parseJSONString(sticky_value) : null
     })
 
-    console.log('test12')
+    console.log('test13')
 
     useEffect(() => {
         if (isNullUndefined(value)) {
