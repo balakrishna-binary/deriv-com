@@ -10,7 +10,7 @@ permissions:
 
 on:
     issue_comment:
-        types: [edited]
+        types: [created]
 
 jobs:
     generate_lighthouse_audit:
