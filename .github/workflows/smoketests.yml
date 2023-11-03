@@ -10,7 +10,7 @@ permissions:
 
 on:
     issue_comment:
-        types: [created]
+        types: [created, edited]
 
 jobs:
     cypress-run:
@@ -23,7 +23,7 @@ jobs:
         steps:
             - name: Capture preview URL
               id: capture_preview_url
-              uses: deriv-com/capture-url-from-issue-comment@v1.0.0
+              uses: deriv-com/capture-url-from-issue-comment@v1.0.1
               with:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
