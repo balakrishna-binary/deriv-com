@@ -25,7 +25,7 @@ jobs:
                   number: ${{ github.event.issue.number }}
                   header: lighthouse
                   message: |
-                      Running Lighthouse audit... ${{ github.event.issue_comment.user.login }}
+                      Running Lighthouse audit... ${{ github.event.issue_comment.comment.user.login }}
             - name: Capture preview URL
               id: capture_preview_url
               uses: deriv-com/capture-url-from-issue-comment@v1.0.3
