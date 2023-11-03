@@ -64,25 +64,6 @@ jobs:
                   message: ${{steps.generate_action_url.outputs.comment}}
                   recreate: true
 
-            - name: Verify user organization
-              id: verify_user_organization
-              run: |
-                  echo "Verifying user's organization..."
-                  user=$(cat ./USERNAME)
-                  response=$(curl -s -L \
-                      -w "%{http_code}" \
-                     -o /dev/null -H "Accept: application/vnd.github+json" \
-                     -H "Authorization: Bearer ${{ secrets.PERSONAL_ACCESS_TOKEN }}" \
-                     -H "X-GitHub-Api-Version: 2022-11-28" \
-                     "https://api.github.com/orgs/binary-com/memberships/$user")
-                     
-                  if [ $response != "200" ]; then
-                      echo "User is not a member of binary-com organization."
-                      exit 1
-                  else
-                      echo "User is a member of binary-com organization."
-                      echo "Proceeding to build and deploy for the pull request: https://github.com/binary-com/deriv-com/pull/$(cat ./NR)"
-                  fi
             - name: Checkout to repo
               uses: actions/checkout@v3
               with:
@@ -90,37 +71,6 @@ jobs:
 
             - name: Setup node
               uses: actions/setup-node@v2
-
-            - name: Get build output from master cache
-              uses: actions/cache/restore@v3
-              with:
-                  key: master-cache-public
-                  restore-keys: |
-                      master-cache-public-replica
-                  path: |
-                      .cache
-                      public
-            - name: Get cached dependencies
-              id: cache-npm
-              uses: actions/cache/restore@v3
-              with:
-                  path: node_modules
-                  key: npm-${{ hashFiles('**/package-lock.json') }}
-
-            - name: Install dependencies
-              if: ${{ steps.cache-npm.outputs.cache-hit != 'true' }}
-              run: npm ci
-
-            - name: Build project
-              id: build-project
-              env:
-                  GATSBY_ENV: staging
-                  GATSBY_GROWTHBOOK_CLIENT_KEY: ${{ secrets.GATSBY_GROWTHBOOK_CLIENT_KEY }}
-                  GATSBY_GROWTHBOOK_DECRYPTION_KEY: ${{ secrets.GATSBY_GROWTHBOOK_DECRYPTION_KEY }}
-                  GATSBY_RUDDERSTACK_STAGING_KEY: ${{ secrets.GATSBY_RUDDERSTACK_STAGING_KEY }}
-                  GATSBY_RUDDERSTACK_PRODUCTION_KEY: ${{ secrets.GATSBY_RUDDERSTACK_PRODUCTION_KEY }}
-                  GATSBY_STRAPI_TOKEN: ${{ secrets.GATSBY_STRAPI_TOKEN }}
-              run: npm run build
 
             - name: Publish to Cloudflare Pages
               id: publish-to-pages
@@ -135,7 +85,6 @@ jobs:
                   projectName='deriv-com-preview-links'
                   head_branch=${{github.event.workflow_run.head_branch}}
                   branch=$(echo $head_branch | head -c 20 | sed 's/[\/_\.]/-/g; s/[^a-zA-Z0-9]$/1/')
-                  preview_url=$(wrangler pages deploy $directory --project-name=$projectName --branch=$branch > log.txt 2>&1; echo $?)
                   echo "------"
                   cat log.txt
                   if grep -q "Deployment complete" log.txt; then
