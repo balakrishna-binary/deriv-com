@@ -28,7 +28,7 @@ jobs:
                       Running Lighthouse audit...
             - name: Capture preview URL
               id: capture_preview_url
-              uses: deriv-com/capture-url-from-issue-comment@v1.0.2
+              uses: deriv-com/capture-url-from-issue-comment@v1.0.3
               with:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
             - uses: actions/checkout@v3
