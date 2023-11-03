@@ -27,7 +27,7 @@ jobs:
                   message: |
                       Running Lighthouse audit...
             - name: Capture preview URL
-              id: capture-preview-url
+              id: capture_preview_url
               uses: deriv-com/capture-url-from-issue-comment@v1.0.0
               with:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -37,7 +37,7 @@ jobs:
               uses: treosh/lighthouse-ci-action@v9
               with:
                   urls: |
-                      ${{ steps.capture-preview-url.outputs.url }}
+                      ${{ steps.capture_preview_url.outputs.url }}
                   uploadArtifacts: true
                   temporaryPublicStorage: true
                   runs: 5
