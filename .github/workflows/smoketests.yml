@@ -9,8 +9,7 @@ permissions:
     statuses: write
 
 on:
-    issue_comment:
-        types: [created, edited]
+    pull_request_comment:
 
 jobs:
     cypress-run:
