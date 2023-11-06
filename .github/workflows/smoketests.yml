@@ -23,9 +23,10 @@ jobs:
         steps:
             - name: Capture preview URL
               id: capture_preview_url
-              uses: deriv-com/capture-url-from-issue-comment@v1.0.3
+              uses: deriv-com/capture-url-from-issue-comment@v1.0.4
               with:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                  user_name: balakrishna-deriv
 
             - name: Checkout external repository with Cypress tests
               uses: actions/checkout@v4
