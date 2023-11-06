@@ -9,7 +9,7 @@ permissions:
     statuses: write
 
 on:
-    pull_request_review_comment:
+    issue_comment:
         types: [created, edited]
 
 jobs:
