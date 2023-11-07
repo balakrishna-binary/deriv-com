@@ -9,14 +9,20 @@ permissions:
     statuses: write
 
 on:
-    issue_comment:
-        types: [created, edited]
+    workflow_run:
+        workflows: ['Generate preview link']
+        types:
+            - completed
 
 jobs:
     generate_lighthouse_audit:
         timeout-minutes: 30
         runs-on: ubuntu-latest
         steps:
+            - name: Dump GitHub context
+              env:
+                  GITHUB_CONTEXT: ${{ toJson(github) }}
+              run: echo "$GITHUB_CONTEXT"
             - name: Add comment to PR
               id: loading_comment_to_pr
               uses: marocchino/sticky-pull-request-comment@v2
@@ -25,7 +31,7 @@ jobs:
                   number: ${{ github.event.issue.number }}
                   header: lighthouse
                   message: |
-                      Running Lighthouse audit... ${{ github.event.issue_comment.comment.user.login }}
+                      Running Lighthouse audit...${{ github.event.workflow_run.pull_requests[0].number }}
             - name: Capture preview URL
               id: capture_preview_url
               uses: deriv-com/capture-url-from-issue-comment@v1.0.4
