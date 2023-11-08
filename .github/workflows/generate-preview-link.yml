@@ -28,6 +28,10 @@ jobs:
             github.event.workflow_run.event == 'pull_request' &&
             github.event.workflow_run.conclusion == 'success'
         steps:
+            - name: Checkout to repo
+              uses: actions/checkout@v3
+              with:
+                  ref: ${{ github.event.workflow_run.head_sha }}
             - name: Download artifact
               id: download-artifact
               uses: dawidd6/action-download-artifact@v2
@@ -35,7 +39,7 @@ jobs:
                   workflow_conclusion: success
                   run_id: ${{ github.event.workflow_run.id }}
                   name: 'pr-${{ github.event.workflow_run.id }}'
-                  path: ${{github.workspace}}/pr
+                  path: .pr
 
             - name: Retrieve pull request
               id: pr_information
@@ -43,8 +47,7 @@ jobs:
                   ls -la ${{github.workspace}}
                   ls -la
                   pwd
-                  echo ${{github.workspace}}
-                  echo "issue_number=$(cat ${{github.workspace}}/pr/NR)" > $GITHUB_OUTPUT
+                  echo "issue_number=$(cat .pr/NR)" > $GITHUB_OUTPUT
 
             - name: 'Generate action link comment'
               id: generate_action_url
@@ -69,11 +72,6 @@ jobs:
                   message: ${{steps.generate_action_url.outputs.comment}}
                   recreate: true
 
-            - name: Checkout to repo
-              uses: actions/checkout@v3
-              with:
-                  ref: ${{ github.event.workflow_run.head_sha }}
-
             - name: Setup node
               uses: actions/setup-node@v2
 
@@ -94,7 +92,7 @@ jobs:
                   echo "preview_url=https://$branch.deriv-com-preview-links.pages.dev" > "$GITHUB_OUTPUT"
                   pwd
                   ls -la
-                  echo $preview_url > ${{github.workspace}}/pr/PREVIEW_URL
+                  echo $preview_url > .pr/PREVIEW_URL
 
             - name: 'Generate preview link comment'
               if: success()
@@ -144,4 +142,4 @@ jobs:
               uses: actions/upload-artifact@v2
               with:
                   name: 'pr-${{github.run_id}}'
-                  path: ${{github.workspace}}/pr
+                  path: .pr
