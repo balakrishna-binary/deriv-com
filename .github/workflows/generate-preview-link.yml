@@ -43,6 +43,7 @@ jobs:
                   ls -la ${{github.workspace}}
                   ls -la
                   pwd
+                  echo ${{github.workspace}}
                   echo "issue_number=$(cat ${{github.workspace}}/pr/NR)" > $GITHUB_OUTPUT
 
             - name: 'Generate action link comment'
