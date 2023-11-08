@@ -35,10 +35,13 @@ jobs:
                   pwd
                   cat ./pr/NR
                   cat ./pr/PREVIEW_URL
-                  cat pr/NR
-                  cat pr/PREVIEW_URL
                   echo "issue_number=$(cat ./pr/NR)" > $GITHUB_OUTPUT
                   echo "preview_url=$(cat ./pr/PREVIEW_URL)" > $GITHUB_OUTPUT
+
+            - name: Test output
+              run: |
+                  echo "${{ steps.pr_information.outputs.issue_number }}"
+                  echo "${{ steps.pr_information.outputs.preview_url }}"
 
             - name: Add comment to PR
               id: loading_comment_to_pr
