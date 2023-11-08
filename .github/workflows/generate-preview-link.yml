@@ -89,9 +89,8 @@ jobs:
                   head_branch=${{github.event.workflow_run.head_branch}}
                   branch=$(echo $head_branch | head -c 20 | sed 's/[\/_\.]/-/g; s/[^a-zA-Z0-9]$/1/')
                   echo "------"
-                  echo "preview_url=https://$branch.deriv-com-preview-links.pages.dev" > "$GITHUB_OUTPUT"
-                  pwd
-                  ls -la
+                  preview_url=https://$branch.deriv-com-preview-links.pages.dev
+                  echo "preview_url=$preview_url" > "$GITHUB_OUTPUT"
                   echo $preview_url > .pr/PREVIEW_URL
 
             - name: 'Generate preview link comment'
