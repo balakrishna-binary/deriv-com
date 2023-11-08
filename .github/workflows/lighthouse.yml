@@ -35,8 +35,8 @@ jobs:
                   pwd
                   cat ./pr/NR
                   cat ./pr/PREVIEW_URL
-                  echo "issue_number=$(cat ./pr/NR)" > $GITHUB_OUTPUT
-                  echo "preview_url=$(cat ./pr/PREVIEW_URL)" > $GITHUB_OUTPUT
+                  echo "issue_number=$(cat ./pr/NR)" >> $GITHUB_OUTPUT
+                  echo "preview_url=$(cat ./pr/PREVIEW_URL)" >> $GITHUB_OUTPUT
 
             - name: Test output
               run: |
@@ -59,7 +59,7 @@ jobs:
               uses: treosh/lighthouse-ci-action@v9
               with:
                   urls: |
-                      ${{ steps.pr_information.outputs.outputs.preview_url }}
+                      ${{ steps.pr_information.outputs.preview_url }}
                   uploadArtifacts: true
                   temporaryPublicStorage: true
                   runs: 5

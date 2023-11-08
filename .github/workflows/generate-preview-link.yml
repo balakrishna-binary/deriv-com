@@ -47,7 +47,7 @@ jobs:
                   ls -la ${{github.workspace}}
                   ls -la
                   pwd
-                  echo "issue_number=$(cat .pr/NR)" > $GITHUB_OUTPUT
+                  echo "issue_number=$(cat .pr/NR)" >> $GITHUB_OUTPUT
 
             - name: 'Generate action link comment'
               id: generate_action_url
@@ -90,7 +90,7 @@ jobs:
                   branch=$(echo $head_branch | head -c 20 | sed 's/[\/_\.]/-/g; s/[^a-zA-Z0-9]$/1/')
                   echo "------"
                   preview_url=https://$branch.deriv-com-preview-links.pages.dev
-                  echo "preview_url=$preview_url" > "$GITHUB_OUTPUT"
+                  echo "preview_url=$preview_url" >> "$GITHUB_OUTPUT"
                   echo $preview_url > .pr/PREVIEW_URL
 
             - name: 'Generate preview link comment'
