@@ -32,6 +32,11 @@ jobs:
             - name: Retrieve pull request
               id: pr_information
               run: |
+                  pwd
+                  cat ./pr/NR
+                  cat ./pr/PREVIEW_URL
+                  cat pr/NR
+                  cat pr/PREVIEW_URL
                   echo "issue_number=$(cat ./pr/NR)" > $GITHUB_OUTPUT
                   echo "preview_url=$(cat ./pr/PREVIEW_URL)" > $GITHUB_OUTPUT
 
